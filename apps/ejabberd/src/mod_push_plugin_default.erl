@@ -27,23 +27,10 @@
 -spec should_publish(From :: ejabberd:jid(), To :: ejabberd:jid(), Packet :: jlib:xmlel()) ->
                             boolean().
 should_publish(_From, To = #jid{luser = LUser, lserver = LServer}, _Packet) ->
-    try ejabberd_users:does_user_exist(LUser, LServer) of
-        false ->
-            false;
-        true ->
-            is_offline(To)
-    catch
-        _:_ ->
-            is_offline(To)
-    end.
+   true.
 
 is_offline(#jid{luser = LUser, lserver = LServer}) ->
-    case catch lists:max(ejabberd_sm:get_user_present_pids(LUser, LServer)) of
-        {Priority, _} when is_integer(Priority), Priority >= 0 ->
-            false;
-        _ ->
-            true
-    end.
+   true.
 
 %% Callback 'sender_id'
 -spec sender_id(From :: ejabberd:jid(), Packet :: jlib:xmlel()) -> SenderId :: binary().
