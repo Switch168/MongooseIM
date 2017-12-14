@@ -30,7 +30,7 @@ should_publish(_From, To = #jid{luser = LUser, lserver = LServer}, _Packet) ->
    true.
 
 is_offline(#jid{luser = LUser, lserver = LServer}) ->
-   true.
+   false.
 
 %% Callback 'sender_id'
 -spec sender_id(From :: ejabberd:jid(), Packet :: jlib:xmlel()) -> SenderId :: binary().
