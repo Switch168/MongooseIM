@@ -126,7 +126,7 @@ make_notification(v2, Notification, Options = #{<<"silent">> := <<"true">>}) ->
         service => maps:get(<<"service">>, Options),
         mode => maps:get(<<"mode">>, Options, <<"prod">>),
         topic => maps:get(<<"topic">>, Options, null),
-        data => Notification#{<<"message-count">> => MessageCount}
+        data => Notification#{<<"message-count">> => MessageCount, <<"force-start">> => <<"1">>}
     }};
 make_notification(v2, Notification, Options) ->
     {ok, #{
