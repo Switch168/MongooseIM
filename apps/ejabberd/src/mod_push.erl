@@ -254,6 +254,8 @@ push_notification_iq(Host, From, Packet, Node, Form) ->
         [
          {<<"FORM_TYPE">>, ?PUSH_FORM_TYPE},
          {<<"message-count">>, <<"1">>},
+         {<<"time_to_live">>, <<"0">>},
+         {<<"id">>, exml_query:attr(Packet, <<"id">>)},
          {<<"last-message-sender">>, mod_push_plugin:sender_id(Host, From, Packet)},
          {<<"last-message-body">>, exml_query:cdata(exml_query:subelement(Packet, <<"body">>))}
         ],
