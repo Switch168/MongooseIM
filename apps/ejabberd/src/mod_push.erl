@@ -260,7 +260,8 @@ push_notification_iq(Host, From, Packet, Node, Form) ->
          {<<"last-message-sender">>, mod_push_plugin:sender_id(Host, From, Packet)},
          {<<"last-message-body">>, exml_query:cdata(exml_query:subelement(Packet, <<"body">>))},
          {<<"sub_type">>, exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"type">>)},
-         {<<"type">>, exml_query:attr(Packet, <<"type">>)}
+         {<<"type">>, exml_query:attr(Packet, <<"type">>)},
+         {<<"thread">>, exml_query:cdata(exml_query:subelement(Packet, <<"thread">>))}
         ],
 
     #iq{type = set, sub_el = [
