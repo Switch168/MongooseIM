@@ -258,7 +258,9 @@ push_notification_iq(Host, From, Packet, Node, Form) ->
          {<<"time_to_live">>, <<"0">>},
          {<<"id">>, exml_query:attr(Packet, <<"id">>)},
          {<<"last-message-sender">>, mod_push_plugin:sender_id(Host, From, Packet)},
-         {<<"last-message-body">>, exml_query:cdata(exml_query:subelement(Packet, <<"body">>))}
+         {<<"last-message-body">>, exml_query:cdata(exml_query:subelement(Packet, <<"body">>))},
+         {<<"sub_type">>, exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"type">>)},
+         {<<"type">>, exml_query:attr(Packet, <<"type">>)}
         ],
 
     #iq{type = set, sub_el = [
