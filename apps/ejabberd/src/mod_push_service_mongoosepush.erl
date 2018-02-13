@@ -128,6 +128,7 @@ make_notification(v2, Notification, Options = #{<<"silent">> := <<"true">>}) ->
         topic => maps:get(<<"topic">>, Options, null),
         data => Notification#{<<"message-count">> => MessageCount, 
                               <<"force-start">> => <<"1">>,
+                              <<"expiration">> => <<"0">>,
                               <<"aps">> => #{
                                 <<"alert">> => Notification
                               }}
