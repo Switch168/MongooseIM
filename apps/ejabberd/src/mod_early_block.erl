@@ -17,13 +17,16 @@ stop(Host) ->
   ok.
 
 momo({From, To = #jid{lserver = Host, user = User, server = Server}, Acc, Packet}) ->
-  UserListRecord = ejabberd_hooks:run_fold(privacy_get_user_list, Server, #userlist{}, [User, Server]),
-  {Acc1, Res} = mongoose_privacy:privacy_check_packet(Acc, Server, User, UserListRecord, To, From, out),
-  case Res of
-    block ->
-      Err = jlib:make_error_reply(Acc, ?ERR_NOT_ACCEPTABLE_BLOCKED),
-      ejabberd_router:route(To, From, Err),
-      drop;
-    _ -> {From, To, Acc, Packet}
+  case string:str(binary_to_list(jid:to_binary(To)), "u") == 1 of
+    true -> {From, To, Acc, Packet};
+    false ->
+      UserListRecord = ejabberd_hooks:run_fold(privacy_get_user_list, Server, #userlist{}, [User, Server]),
+      {Acc1, Res} = mongoose_privacy:privacy_check_packet(Acc, Server, User, UserListRecord, To, From, out),
+      case Res of
+        block ->
+          Err = jlib:make_error_reply(Acc, ?ERR_NOT_ACCEPTABLE_BLOCKED),
+          ejabberd_router:route(To, From, Err),
+          drop;
+        _ -> {From, To, Acc, Packet}
+      end
   end.
-
