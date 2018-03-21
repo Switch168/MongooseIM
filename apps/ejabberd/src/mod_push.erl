@@ -247,6 +247,27 @@ parse_form(Form) ->
             invalid_form
     end.
 
+get_display_photo(Packet) -> 
+  DisplayPhoto = exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"displayPhoto">>),
+  case DisplayPhoto of 
+    undefined -> <<"">>;
+    _ -> DisplayPhoto
+  end.
+
+get_cover_photo(Packet) -> 
+  CoverPhoto = exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"coverPhoto">>),
+  case CoverPhoto of 
+    undefined -> <<"">>;
+    _ -> CoverPhoto
+  end.
+
+get_display_name(Packet) -> 
+  DisplayName = exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"displayName">>),
+  case DisplayName of 
+    undefined -> <<"">>;
+    _ -> DisplayName
+  end.
+
 -spec push_notification_iq(Host :: ejabberd:server(), From :: ejabberd:jid(),
                            Packet :: jlib:xmlel(), Node :: pubsub_node(), Form :: form()) -> iq().
 push_notification_iq(Host, From, Packet, Node, Form) ->
@@ -262,6 +283,9 @@ push_notification_iq(Host, From, Packet, Node, Form) ->
          {<<"last-message-body">>, exml_query:cdata(exml_query:subelement(Packet, <<"body">>))},
          {<<"type">>, exml_query:attr(Packet, <<"type">>)},
          {<<"sub_type">>, exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"type">>)},
+         {<<"displayPhoto">>, get_display_photo(Packet)}, 
+         {<<"coverPhoto">>, get_cover_photo(Packet)}, 
+         {<<"displayName">>, get_display_name(Packet)}, 
          {<<"type">>, exml_query:attr(Packet, <<"type">>)},
          {<<"thread">>, exml_query:cdata(exml_query:subelement(Packet, <<"thread">>))}
         ],
