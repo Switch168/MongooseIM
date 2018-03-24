@@ -268,6 +268,13 @@ get_display_name(Packet) ->
     _ -> DisplayName
   end.
 
+get_group_name(Packet) -> 
+  GroupName = exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"groupName">>),
+  case GroupName of 
+    undefined -> <<"">>;
+    _ -> GroupName
+  end.
+
 -spec push_notification_iq(Host :: ejabberd:server(), From :: ejabberd:jid(),
                            Packet :: jlib:xmlel(), Node :: pubsub_node(), Form :: form()) -> iq().
 push_notification_iq(Host, From, Packet, Node, Form) ->
@@ -285,7 +292,8 @@ push_notification_iq(Host, From, Packet, Node, Form) ->
          {<<"sub_type">>, exml_query:attr(exml_query:subelement(Packet, <<"kosmos">>), <<"type">>)},
          {<<"displayPhoto">>, get_display_photo(Packet)}, 
          {<<"coverPhoto">>, get_cover_photo(Packet)}, 
-         {<<"displayName">>, get_display_name(Packet)}, 
+         {<<"displayName">>, get_display_name(Packet)},
+         {<<"groupName">>, get_group_name(Packet)},
          {<<"type">>, exml_query:attr(Packet, <<"type">>)},
          {<<"thread">>, exml_query:cdata(exml_query:subelement(Packet, <<"thread">>))}
         ],
